@@ -1,0 +1,61 @@
+[
+  { "city": "도쿄", "season": "봄", "flight_price_krw": { "min": 300000, "max": 500000 }, "hotel_price_krw_per_night": { "저": 50000, "중": 120000, "고": 280000 }, "local_transport_krw_per_day": 15000, "food_price_krw_per_day": 36000 },
+  { "city": "도쿄", "season": "여름", "flight_price_krw": { "min": 230000, "max": 420000 }, "hotel_price_krw_per_night": { "저": 38000, "중": 95000, "고": 230000 }, "local_transport_krw_per_day": 15000, "food_price_krw_per_day": 29000 },
+  { "city": "도쿄", "season": "가을", "flight_price_krw": { "min": 290000, "max": 490000 }, "hotel_price_krw_per_night": { "저": 48000, "중": 115000, "고": 270000 }, "local_transport_krw_per_day": 15000, "food_price_krw_per_day": 36000 },
+  { "city": "도쿄", "season": "겨울", "flight_price_krw": { "min": 220000, "max": 400000 }, "hotel_price_krw_per_night": { "저": 35000, "중": 90000, "고": 220000 }, "local_transport_krw_per_day": 15000, "food_price_krw_per_day": 29000 },
+
+  { "city": "오사카", "season": "봄", "flight_price_krw": { "min": 260000, "max": 440000 }, "hotel_price_krw_per_night": { "저": 42000, "중": 105000, "고": 240000 }, "local_transport_krw_per_day": 13000, "food_price_krw_per_day": 34000 },
+  { "city": "오사카", "season": "여름", "flight_price_krw": { "min": 200000, "max": 380000 }, "hotel_price_krw_per_night": { "저": 32000, "중": 85000, "고": 200000 }, "local_transport_krw_per_day": 13000, "food_price_krw_per_day": 27000 },
+  { "city": "오사카", "season": "가을", "flight_price_krw": { "min": 250000, "max": 430000 }, "hotel_price_krw_per_night": { "저": 40000, "중": 100000, "고": 230000 }, "local_transport_krw_per_day": 13000, "food_price_krw_per_day": 34000 },
+  { "city": "오사카", "season": "겨울", "flight_price_krw": { "min": 190000, "max": 360000 }, "hotel_price_krw_per_night": { "저": 30000, "중": 80000, "고": 190000 }, "local_transport_krw_per_day": 13000, "food_price_krw_per_day": 27000 },
+
+  { "city": "오키나와", "season": "봄", "flight_price_krw": { "min": 300000, "max": 500000 }, "hotel_price_krw_per_night": { "저": 48000, "중": 115000, "고": 270000 }, "local_transport_krw_per_day": 12000, "food_price_krw_per_day": 32000 },
+  { "city": "오키나와", "season": "여름", "flight_price_krw": { "min": 320000, "max": 540000 }, "hotel_price_krw_per_night": { "저": 55000, "중": 130000, "고": 300000 }, "local_transport_krw_per_day": 12000, "food_price_krw_per_day": 32000 },
+  { "city": "오키나와", "season": "가을", "flight_price_krw": { "min": 270000, "max": 460000 }, "hotel_price_krw_per_night": { "저": 42000, "중": 105000, "고": 250000 }, "local_transport_krw_per_day": 12000, "food_price_krw_per_day": 26000 },
+  { "city": "오키나와", "season": "겨울", "flight_price_krw": { "min": 240000, "max": 420000 }, "hotel_price_krw_per_night": { "저": 38000, "중": 95000, "고": 230000 }, "local_transport_krw_per_day": 12000, "food_price_krw_per_day": 26000 },
+
+  { "city": "베이징", "season": "봄", "flight_price_krw": { "min": 210000, "max": 390000 }, "hotel_price_krw_per_night": { "저": 32000, "중": 82000, "고": 205000 }, "local_transport_krw_per_day": 10000, "food_price_krw_per_day": 25000 },
+  { "city": "베이징", "season": "여름", "flight_price_krw": { "min": 190000, "max": 360000 }, "hotel_price_krw_per_night": { "저": 28000, "중": 75000, "고": 190000 }, "local_transport_krw_per_day": 10000, "food_price_krw_per_day": 20000 },
+  { "city": "베이징", "season": "가을", "flight_price_krw": { "min": 230000, "max": 410000 }, "hotel_price_krw_per_night": { "저": 35000, "중": 88000, "고": 215000 }, "local_transport_krw_per_day": 10000, "food_price_krw_per_day": 25000 },
+  { "city": "베이징", "season": "겨울", "flight_price_krw": { "min": 170000, "max": 330000 }, "hotel_price_krw_per_night": { "저": 25000, "중": 65000, "고": 170000 }, "local_transport_krw_per_day": 10000, "food_price_krw_per_day": 20000 },
+
+  { "city": "상하이", "season": "봄", "flight_price_krw": { "min": 220000, "max": 400000 }, "hotel_price_krw_per_night": { "저": 37000, "중": 92000, "고": 235000 }, "local_transport_krw_per_day": 11000, "food_price_krw_per_day": 26000 },
+  { "city": "상하이", "season": "여름", "flight_price_krw": { "min": 200000, "max": 370000 }, "hotel_price_krw_per_night": { "저": 32000, "중": 85000, "고": 210000 }, "local_transport_krw_per_day": 11000, "food_price_krw_per_day": 21000 },
+  { "city": "상하이", "season": "가을", "flight_price_krw": { "min": 230000, "max": 410000 }, "hotel_price_krw_per_night": { "저": 38000, "중": 95000, "고": 240000 }, "local_transport_krw_per_day": 11000, "food_price_krw_per_day": 26000 },
+  { "city": "상하이", "season": "겨울", "flight_price_krw": { "min": 190000, "max": 350000 }, "hotel_price_krw_per_night": { "저": 30000, "중": 80000, "고": 200000 }, "local_transport_krw_per_day": 11000, "food_price_krw_per_day": 21000 },
+
+  { "city": "청두", "season": "봄", "flight_price_krw": { "min": 240000, "max": 410000 }, "hotel_price_krw_per_night": { "저": 30000, "중": 72000, "고": 185000 }, "local_transport_krw_per_day": 9000, "food_price_krw_per_day": 23000 },
+  { "city": "청두", "season": "여름", "flight_price_krw": { "min": 220000, "max": 390000 }, "hotel_price_krw_per_night": { "저": 26000, "중": 68000, "고": 175000 }, "local_transport_krw_per_day": 9000, "food_price_krw_per_day": 19000 },
+  { "city": "청두", "season": "가을", "flight_price_krw": { "min": 225000, "max": 395000 }, "hotel_price_krw_per_night": { "저": 27000, "중": 69000, "고": 178000 }, "local_transport_krw_per_day": 9000, "food_price_krw_per_day": 23000 },
+  { "city": "청두", "season": "겨울", "flight_price_krw": { "min": 210000, "max": 370000 }, "hotel_price_krw_per_night": { "저": 24000, "중": 64000, "고": 165000 }, "local_transport_krw_per_day": 9000, "food_price_krw_per_day": 19000 },
+
+  { "city": "하노이", "season": "봄", "flight_price_krw": { "min": 310000, "max": 510000 }, "hotel_price_krw_per_night": { "저": 21000, "중": 52000, "고": 132000 }, "local_transport_krw_per_day": 8000, "food_price_krw_per_day": 14000 },
+  { "city": "하노이", "season": "여름", "flight_price_krw": { "min": 280000, "max": 480000 }, "hotel_price_krw_per_night": { "저": 18000, "중": 47000, "고": 125000 }, "local_transport_krw_per_day": 8000, "food_price_krw_per_day": 14000 },
+  { "city": "하노이", "season": "가을", "flight_price_krw": { "min": 330000, "max": 530000 }, "hotel_price_krw_per_night": { "저": 24000, "중": 56000, "고": 140000 }, "local_transport_krw_per_day": 8000, "food_price_krw_per_day": 17000 },
+  { "city": "하노이", "season": "겨울", "flight_price_krw": { "min": 340000, "max": 540000 }, "hotel_price_krw_per_night": { "저": 25000, "중": 58000, "고": 145000 }, "local_transport_krw_per_day": 8000, "food_price_krw_per_day": 17000 },
+
+  { "city": "다낭", "season": "봄", "flight_price_krw": { "min": 330000, "max": 530000 }, "hotel_price_krw_per_night": { "저": 27000, "중": 62000, "고": 155000 }, "local_transport_krw_per_day": 8000, "food_price_krw_per_day": 19000 },
+  { "city": "다낭", "season": "여름", "flight_price_krw": { "min": 340000, "max": 540000 }, "hotel_price_krw_per_night": { "저": 30000, "중": 68000, "고": 165000 }, "local_transport_krw_per_day": 8000, "food_price_krw_per_day": 16000 },
+  { "city": "다낭", "season": "가을", "flight_price_krw": { "min": 290000, "max": 490000 }, "hotel_price_krw_per_night": { "저": 22000, "중": 55000, "고": 140000 }, "local_transport_krw_per_day": 8000, "food_price_krw_per_day": 19000 },
+  { "city": "다낭", "season": "겨울", "flight_price_krw": { "min": 350000, "max": 550000 }, "hotel_price_krw_per_night": { "저": 32000, "중": 70000, "고": 170000 }, "local_transport_krw_per_day": 8000, "food_price_krw_per_day": 16000 },
+
+  { "city": "푸꾸옥", "season": "봄", "flight_price_krw": { "min": 390000, "max": 590000 }, "hotel_price_krw_per_night": { "저": 32000, "중": 72000, "고": 185000 }, "local_transport_krw_per_day": 9000, "food_price_krw_per_day": 20000 },
+  { "city": "푸꾸옥", "season": "여름", "flight_price_krw": { "min": 360000, "max": 560000 }, "hotel_price_krw_per_night": { "저": 27000, "중": 65000, "고": 165000 }, "local_transport_krw_per_day": 9000, "food_price_krw_per_day": 17000 },
+  { "city": "푸꾸옥", "season": "가을", "flight_price_krw": { "min": 340000, "max": 540000 }, "hotel_price_krw_per_night": { "저": 24000, "중": 60000, "고": 155000 }, "local_transport_krw_per_day": 9000, "food_price_krw_per_day": 17000 },
+  { "city": "푸꾸옥", "season": "겨울", "flight_price_krw": { "min": 420000, "max": 620000 }, "hotel_price_krw_per_night": { "저": 38000, "중": 85000, "고": 210000 }, "local_transport_krw_per_day": 9000, "food_price_krw_per_day": 20000 },
+
+  { "city": "방콕", "season": "봄", "flight_price_krw": { "min": 340000, "max": 540000 }, "hotel_price_krw_per_night": { "저": 24000, "중": 62000, "고": 155000 }, "local_transport_krw_per_day": 9000, "food_price_krw_per_day": 19000 },
+  { "city": "방콕", "season": "여름", "flight_price_krw": { "min": 320000, "max": 520000 }, "hotel_price_krw_per_night": { "저": 22000, "중": 58000, "고": 145000 }, "local_transport_krw_per_day": 9000, "food_price_krw_per_day": 19000 },
+  { "city": "방콕", "season": "가을", "flight_price_krw": { "min": 330000, "max": 530000 }, "hotel_price_krw_per_night": { "저": 23000, "중": 60000, "고": 150000 }, "local_transport_krw_per_day": 9000, "food_price_krw_per_day": 19000 },
+  { "city": "방콕", "season": "겨울", "flight_price_krw": { "min": 400000, "max": 600000 }, "hotel_price_krw_per_night": { "저": 30000, "중": 75000, "고": 185000 }, "local_transport_krw_per_day": 9000, "food_price_krw_per_day": 23000 },
+
+  { "city": "치앙마이", "season": "봄", "flight_price_krw": { "min": 390000, "max": 590000 }, "hotel_price_krw_per_night": { "저": 20000, "중": 54000, "고": 138000 }, "local_transport_krw_per_day": 7000, "food_price_krw_per_day": 20000 },
+  { "city": "치앙마이", "season": "여름", "flight_price_krw": { "min": 370000, "max": 570000 }, "hotel_price_krw_per_night": { "저": 18000, "중": 50000, "고": 128000 }, "local_transport_krw_per_day": 7000, "food_price_krw_per_day": 17000 },
+  { "city": "치앙마이", "season": "가을", "flight_price_krw": { "min": 380000, "max": 580000 }, "hotel_price_krw_per_night": { "저": 19000, "중": 52000, "고": 132000 }, "local_transport_krw_per_day": 7000, "food_price_krw_per_day": 17000 },
+  { "city": "치앙마이", "season": "겨울", "flight_price_krw": { "min": 440000, "max": 640000 }, "hotel_price_krw_per_night": { "저": 26000, "중": 65000, "고": 160000 }, "local_transport_krw_per_day": 7000, "food_price_krw_per_day": 20000 },
+
+  { "city": "푸켓", "season": "봄", "flight_price_krw": { "min": 410000, "max": 610000 }, "hotel_price_krw_per_night": { "저": 34000, "중": 88000, "고": 215000 }, "local_transport_krw_per_day": 10000, "food_price_krw_per_day": 24000 },
+  { "city": "푸켓", "season": "여름", "flight_price_krw": { "min": 390000, "max": 590000 }, "hotel_price_krw_per_night": { "저": 30000, "중": 80000, "고": 195000 }, "local_transport_krw_per_day": 10000, "food_price_krw_per_day": 20000 },
+  { "city": "푸켓", "season": "가을", "flight_price_krw": { "min": 380000, "max": 580000 }, "hotel_price_krw_per_night": { "저": 28000, "중": 75000, "고": 185000 }, "local_transport_krw_per_day": 10000, "food_price_krw_per_day": 20000 },
+  { "city": "푸켓", "season": "겨울", "flight_price_krw": { "min": 460000, "max": 660000 }, "hotel_price_krw_per_night": { "저": 42000, "중": 105000, "고": 250000 }, "local_transport_krw_per_day": 10000, "food_price_krw_per_day": 24000 }
+]

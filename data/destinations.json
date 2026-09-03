@@ -1,0 +1,14 @@
+[
+  { "country": "일본", "city": "도쿄", "purpose": ["관광", "쇼핑"], "season_recommend": ["봄", "가을"] },
+  { "country": "일본", "city": "오사카", "purpose": ["관광", "쇼핑"], "season_recommend": ["봄", "가을"] },
+  { "country": "일본", "city": "오키나와", "purpose": ["휴양"], "season_recommend": ["봄", "여름"] },
+  { "country": "중국", "city": "베이징", "purpose": ["관광"], "season_recommend": ["봄", "가을"] },
+  { "country": "중국", "city": "상하이", "purpose": ["관광", "쇼핑"], "season_recommend": ["봄", "가을"] },
+  { "country": "중국", "city": "청두", "purpose": ["관광"], "season_recommend": ["봄", "가을"] },
+  { "country": "베트남", "city": "하노이", "purpose": ["관광"], "season_recommend": ["가을", "겨울"] },
+  { "country": "베트남", "city": "다낭", "purpose": ["휴양", "관광"], "season_recommend": ["봄", "가을"] },
+  { "country": "베트남", "city": "푸꾸옥", "purpose": ["휴양"], "season_recommend": ["겨울", "봄"] },
+  { "country": "태국", "city": "방콕", "purpose": ["관광", "쇼핑"], "season_recommend": ["겨울"] },
+  { "country": "태국", "city": "치앙마이", "purpose": ["관광", "휴양"], "season_recommend": ["겨울", "봄"] },
+  { "country": "태국", "city": "푸켓", "purpose": ["휴양"], "season_recommend": ["겨울", "봄"] }
+]

@@ -1,0 +1,61 @@
+[
+  { "city": "도쿄", "season": "봄", "avg_temp_c": 15, "note": "벚꽃철, 쾌적한 여행 적기" },
+  { "city": "도쿄", "season": "여름", "avg_temp_c": 26, "note": "고온다습, 6월 장마철" },
+  { "city": "도쿄", "season": "가을", "avg_temp_c": 18, "note": "단풍철, 선선하고 쾌적" },
+  { "city": "도쿄", "season": "겨울", "avg_temp_c": 6, "note": "건조하고 추움, 맑은 날 많음" },
+
+  { "city": "오사카", "season": "봄", "avg_temp_c": 16, "note": "벚꽃철, 여행 적기" },
+  { "city": "오사카", "season": "여름", "avg_temp_c": 28, "note": "고온다습, 장마·태풍 가능" },
+  { "city": "오사카", "season": "가을", "avg_temp_c": 19, "note": "단풍철, 선선" },
+  { "city": "오사카", "season": "겨울", "avg_temp_c": 7, "note": "건조하고 쌀쌀" },
+
+  { "city": "오키나와", "season": "봄", "avg_temp_c": 20, "note": "온화, 휴양 여행 적기" },
+  { "city": "오키나와", "season": "여름", "avg_temp_c": 29, "note": "무더움, 7~9월 태풍 주의" },
+  { "city": "오키나와", "season": "가을", "avg_temp_c": 24, "note": "태풍 영향 가능 시기" },
+  { "city": "오키나와", "season": "겨울", "avg_temp_c": 17, "note": "따뜻해 겨울 휴양지로 적합" },
+
+  { "city": "베이징", "season": "봄", "avg_temp_c": 14, "note": "황사 주의 시기" },
+  { "city": "베이징", "season": "여름", "avg_temp_c": 27, "note": "고온다습, 소나기 잦음" },
+  { "city": "베이징", "season": "가을", "avg_temp_c": 16, "note": "맑고 선선, 여행 적기" },
+  { "city": "베이징", "season": "겨울", "avg_temp_c": -2, "note": "건조하고 매우 추움" },
+
+  { "city": "상하이", "season": "봄", "avg_temp_c": 16, "note": "쾌적, 여행 적기" },
+  { "city": "상하이", "season": "여름", "avg_temp_c": 29, "note": "고온다습, 태풍 영향 가능" },
+  { "city": "상하이", "season": "가을", "avg_temp_c": 20, "note": "선선하고 맑음, 여행 적기" },
+  { "city": "상하이", "season": "겨울", "avg_temp_c": 5, "note": "흐리고 쌀쌀" },
+
+  { "city": "청두", "season": "봄", "avg_temp_c": 17, "note": "온화, 여행 적기" },
+  { "city": "청두", "season": "여름", "avg_temp_c": 26, "note": "습하고 흐린 날 많음" },
+  { "city": "청두", "season": "가을", "avg_temp_c": 18, "note": "안개 잦음" },
+  { "city": "청두", "season": "겨울", "avg_temp_c": 7, "note": "흐리고 쌀쌀" },
+
+  { "city": "하노이", "season": "봄", "avg_temp_c": 20, "note": "습하고 흐린 날 많음" },
+  { "city": "하노이", "season": "여름", "avg_temp_c": 30, "note": "고온다습, 5~9월 우기" },
+  { "city": "하노이", "season": "가을", "avg_temp_c": 24, "note": "선선하고 맑음, 여행 적기" },
+  { "city": "하노이", "season": "겨울", "avg_temp_c": 17, "note": "쌀쌀하고 건조" },
+
+  { "city": "다낭", "season": "봄", "avg_temp_c": 24, "note": "온화, 여행 적기" },
+  { "city": "다낭", "season": "여름", "avg_temp_c": 30, "note": "무덥지만 맑음, 해변 휴양 성수기" },
+  { "city": "다낭", "season": "가을", "avg_temp_c": 26, "note": "9~11월 우기·태풍 주의" },
+  { "city": "다낭", "season": "겨울", "avg_temp_c": 21, "note": "선선, 여행 적기" },
+
+  { "city": "푸꾸옥", "season": "봄", "avg_temp_c": 28, "note": "건기, 여행 적기" },
+  { "city": "푸꾸옥", "season": "여름", "avg_temp_c": 28, "note": "우기 시작" },
+  { "city": "푸꾸옥", "season": "가을", "avg_temp_c": 27, "note": "우기 절정" },
+  { "city": "푸꾸옥", "season": "겨울", "avg_temp_c": 26, "note": "건기, 휴양 최적기" },
+
+  { "city": "방콕", "season": "봄", "avg_temp_c": 30, "note": "연중 가장 더운 시기" },
+  { "city": "방콕", "season": "여름", "avg_temp_c": 29, "note": "6~10월 우기" },
+  { "city": "방콕", "season": "가을", "avg_temp_c": 28, "note": "우기 지속" },
+  { "city": "방콕", "season": "겨울", "avg_temp_c": 26, "note": "건기, 여행 적기" },
+
+  { "city": "치앙마이", "season": "봄", "avg_temp_c": 29, "note": "건조하고 더움, 3~4월 스모그 주의" },
+  { "city": "치앙마이", "season": "여름", "avg_temp_c": 27, "note": "우기" },
+  { "city": "치앙마이", "season": "가을", "avg_temp_c": 26, "note": "우기 끝물" },
+  { "city": "치앙마이", "season": "겨울", "avg_temp_c": 22, "note": "선선, 여행 최적기" },
+
+  { "city": "푸켓", "season": "봄", "avg_temp_c": 29, "note": "건기, 여행 적기" },
+  { "city": "푸켓", "season": "여름", "avg_temp_c": 28, "note": "우기 시작, 해상 파도 주의" },
+  { "city": "푸켓", "season": "가을", "avg_temp_c": 27, "note": "우기 절정" },
+  { "city": "푸켓", "season": "겨울", "avg_temp_c": 27, "note": "건기, 휴양 최적기" }
+]
