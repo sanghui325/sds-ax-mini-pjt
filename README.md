@@ -1,6 +1,6 @@
 # 해외여행 플랜 Agent
 
-여행 기간·목적·예산만 말하면 여행지 추천부터 일정(항공권·숙박·교통·식비) 배분, 비자·안전 주의사항까지 근거와 함께 한 번에 답해주는 LangGraph 기반 에이전트입니다. 대상은 일본·중국·베트남·태국 12개 도시이며, 필수 정보가 부족하면 임의로 단정하지 않고 되묻고, 근거 없는 답변·예산 초과 배분은 코드 레벨 가드레일로 막습니다. 서비스 요구사항은 [SERVICE.md](SERVICE.md), 프로젝트 규칙은 [CLAUDE.md](CLAUDE.md)를 참고하세요.
+여행 기간·목적·예산만 말하면 여행지 추천부터 일정(항공권·숙박·교통·식비) 배분, 비자·안전 주의사항까지 근거와 함께 한 번에 답해주는 LangGraph 기반 에이전트입니다. 추천받은 후보 중 하나를 후속 메시지로 고르면 그 도시의 관광지·맛집도 이어서 안내합니다. 대상은 일본·중국·베트남·태국 12개 도시이며, 필수 정보가 부족하면 임의로 단정하지 않고 되묻고, 근거 없는 답변·예산 초과 배분·지원 범위 밖 요청은 코드 레벨 가드레일로 막습니다. 서비스 요구사항은 [SERVICE.md](SERVICE.md), 프로젝트 규칙은 [CLAUDE.md](CLAUDE.md)를 참고하세요.
 
 ## 기술 스택
 
@@ -66,12 +66,12 @@ curl -X POST http://localhost:8000/query \
   -d '{"question": "10월 5일부터 9일까지 관광 목적으로 여행 가고 싶어. 예산은 150만원이야.", "session_id": "'$(uuidgen)'"}'
 ```
 
-필수 정보(기간·목적·예산) 중 빠진 게 있으면 도구를 호출하지 않고 되묻는 질문만 돌려줍니다 — 같은 `session_id`로 다음 턴에 이어서 답하면 됩니다.
+필수 정보(기간·목적·예산) 중 빠진 게 있으면 도구를 호출하지 않고 되묻는 질문만 돌려줍니다 — 같은 `session_id`로 다음 턴에 이어서 답하면 됩니다. 여행지 추천을 받은 세션에서 후보 중 하나를 이름이나 순번("1번" 등)으로 고르면, 그 도시의 관광지·맛집만 간결히 답하는 후속 턴으로 자동 전환됩니다(이전 턴의 예산·주의사항은 반복하지 않습니다).
 
 ## 데이터
 
-- `data/destinations.json`, `data/prices.json`, `data/weather.json`, `data/visa_safety.md` — 4개국(일본·중국·베트남·태국) 12개 도시 기준
-- 전부 프로젝트 제출용 더미 데이터입니다. 실제 서비스로 전환하려면 비자·안전 정보는 외교부 해외안전여행(0404.go.kr) 등 공식 출처로, 가격 데이터는 실시간 API로 교체해야 합니다.
+- `data/destinations.json`, `data/prices.json`, `data/weather.json`, `data/visa_safety.md`, `data/attractions.md` — 4개국(일본·중국·베트남·태국) 12개 도시 기준
+- 전부 프로젝트 제출용 더미 데이터입니다. 실제 서비스로 전환하려면 비자·안전·관광 정보는 외교부 해외안전여행(0404.go.kr)·공식 관광청 자료 등으로, 가격 데이터는 실시간 API로 교체해야 합니다.
 
 ## 평가
 
@@ -80,4 +80,4 @@ python evaluation/run_eval.py             # expected_traits까지 LLM-judge로 �
 python evaluation/run_eval.py --no-llm-judge   # tools/forbidden 자동 채점만 (Bedrock 호출 적음)
 ```
 
-`evaluation/test_queries.csv`(12건: positive/negative/edge/guardrail)를 순서대로 실행해 `evaluation/eval_report.md`를 생성합니다. `expected_tools`(도구 호출 순서)·`forbidden`(금지 문자열)은 자동 채점되고, `expected_traits`는 참고용으로 답변과 나란히 기록됩니다.
+`evaluation/test_queries.csv`(19건: positive/negative/edge/guardrail, 그중 일부는 관광지·맛집 후속 질문 기능을 검증하는 2~3턴짜리 멀티턴 케이스)를 순서대로 실행해 리포트를 생성합니다(출력 파일명은 `run_eval.py`의 `_REPORT_PATH`를 확인하세요 — 리포트를 반복 생성하며 파일명을 바꿔온 이력이 있습니다). `expected_tools`(도구 호출 순서)·`forbidden`(금지 문자열)은 자동 채점되고, `expected_traits`는 참고용으로 답변과 나란히 기록됩니다.
