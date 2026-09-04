@@ -4,7 +4,7 @@ import json
 from functools import lru_cache
 from pathlib import Path
 
-from src.retriever import retrieve
+from src.retriever import retrieve, retrieve_attractions
 
 _DATA_DIR = Path(__file__).resolve().parent.parent / "data"
 _TIERS = ("고", "중", "저")
@@ -167,3 +167,13 @@ def get_precautions(country: str, focus: str | None = None) -> dict:
     query = f"{country} {focus}".strip() if focus else f"{country} 비자 안전 주의사항"
     contexts = retrieve(query=query, country=country)
     return {"has_evidence": bool(contexts), "contexts": contexts, "country": country}
+
+
+def get_attractions(city: str) -> dict:
+    """도시의 주요 관광지·맛집을 retriever로 검색해 근거와 함께 반환한다.
+
+    근거 문서를 찾지 못하면 has_evidence=False를 반환한다 — 상위 답변
+    생성 단계는 이 경우 내용을 지어내지 말고 근거 없음으로 안내해야 한다.
+    """
+    contexts = retrieve_attractions(query=f"{city} 관광지 맛집", city=city)
+    return {"has_evidence": bool(contexts), "contexts": contexts, "city": city}

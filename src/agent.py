@@ -19,6 +19,7 @@ from langgraph.graph.message import add_messages
 from pydantic import BaseModel, Field
 
 from src.tools import (
+    get_attractions,
     get_precautions,
     list_supported_cities,
     plan_itinerary,
@@ -84,6 +85,30 @@ class SpecialIntent(BaseModel):
     )
 
 
+class FollowupIntent(BaseModel):
+    """이미 여행지 추천을 받은 세션에서, 후속 메시지의 의도를 분류한다 (구조화 출력용).
+
+    사용자가 이전에 제시된 후보 중 하나를 고르며 관광지·맛집 정보를 원하는
+    것인지, 아니면 조건을 바꿔 다시 추천·계획을 받고 싶어하는 것인지 구분한다.
+    """
+
+    wants_city_details: bool = Field(
+        description=(
+            "사용자가 이전 후보 중 특정 도시를 고르며 관광지·꼭 가봐야 할 곳·맛집 "
+            "정보를 원하면 true. 예산·기간·목적 등 조건을 바꿔서 다시 추천·계획을 "
+            "받고 싶어하는 것이면(재계획 요청) false"
+        )
+    )
+    selected_city: str | None = Field(
+        None,
+        description=(
+            "wants_city_details가 true일 때 사용자가 고른 도시명. 이름으로 "
+            "골랐든('오사카') 순번으로 골랐든('1번', '첫번째') 이전 후보 목록과 "
+            "대조해서 정확한 도시명 하나로 담아라. 특정할 수 없으면 null"
+        ),
+    )
+
+
 class AgentState(TypedDict):
     """그래프 전체에서 공유하는 상태."""
 
@@ -95,6 +120,7 @@ class AgentState(TypedDict):
     itinerary_results: list[dict]
     precautions_result: dict | None
     precautions_by_country: dict[str, dict]
+    attractions_result: dict | None
     special_intent: dict | None
     trace: list[str]
     answer: str
@@ -135,6 +161,19 @@ def _merge_slots(previous: Slots, extracted: SlotExtraction) -> Slots:
     return merged
 
 
+def _slots_for_prompt(slots: Slots) -> dict:
+    """슬롯을 답변 생성 프롬프트에 넘기기 전에, 예산을 미리 '만원' 단위 문자열로
+    포맷해 budget_krw_formatted로 덧붙인다 — LLM이 원 단위 정수를 직접
+    만원으로 환산하다 자릿수를 틀리는 경우(예: 150만원을 1,500만원으로 표기)가
+    있어, 계산을 코드에서 끝내고 넘겨준다.
+    """
+    slots_dict = dict(slots)
+    budget_krw = slots.get("budget_krw")
+    if budget_krw:
+        slots_dict["budget_krw_formatted"] = f"{budget_krw // 10000}만원"
+    return slots_dict
+
+
 def _missing_slot(slots: Slots) -> str | None:
     """기간 → 목적 → 예산 순으로, 아직 안 채워진 필수 슬롯을 하나만 고른다."""
     if not slots.get("season") or not slots.get("nights"):
@@ -147,7 +186,13 @@ def _missing_slot(slots: Slots) -> str | None:
 
 
 def extract_slots_node(state: AgentState) -> dict:
-    """사용자 발화를 구조화 추출해 이전 슬롯과 병합한다."""
+    """사용자 발화를 구조화 추출해 이전 슬롯과 병합한다.
+
+    매 턴의 첫 노드라 여기서 trace를 [] 로 초기화한다 — trace는 세션
+    체크포인트에 그대로 보존되는 값이라, 여기서 리셋하지 않으면 이전 턴에
+    호출된 도구까지 이번 턴 trace에 계속 쌓여버린다(턴 내부에서 여러
+    노드를 거치며 누적되는 동작 자체는 그대로 유지됨).
+    """
     slot_agent = create_agent(
         model=_llm(),
         tools=None,
@@ -162,7 +207,7 @@ def extract_slots_node(state: AgentState) -> dict:
     result = slot_agent.invoke({"messages": state["messages"]})
     extracted: SlotExtraction = result["structured_response"]
     slots = _merge_slots(state.get("slots", {}), extracted)
-    return {"slots": slots, "missing_slot": _missing_slot(slots)}
+    return {"slots": slots, "missing_slot": _missing_slot(slots), "trace": []}
 
 
 def route_after_extract(state: AgentState) -> Literal["ask_missing_slot", "recommend"]:
@@ -172,15 +217,20 @@ def route_after_extract(state: AgentState) -> Literal["ask_missing_slot", "recom
 
 def route_after_extract_extended(
     state: AgentState,
-) -> Literal["recommend", "scope_check", "classify_partial_intent", "ask_missing_slot"]:
+) -> Literal[
+    "recommend", "classify_followup", "scope_check", "classify_partial_intent", "ask_missing_slot"
+]:
     """슬롯이 다 찼으면 기존과 동일하게 진행하고, 부족할 때만 특수 의도(지원 범위 밖
     지명·안전정보 단독 질문·강제 예산 배분 요구)를 먼저 확인한다.
 
     기존 route_after_extract를 대체하지 않고 그래프 배선에서만 이 함수를 쓴다 —
     슬롯이 이미 다 채워진 경우(P01~P05, N02, E02)의 동작은 route_after_extract와
-    100% 동일하다.
+    100% 동일하다. 단, 이전 턴에 이미 추천을 준 세션(destinations_result가 있음)
+    이면 후속 의도(관광지·맛집 상세 vs 재계획)를 먼저 확인한다.
     """
     if state["missing_slot"] is None:
+        if state.get("destinations_result") is not None:
+            return "classify_followup"
         return "recommend"
 
     city = (state.get("slots") or {}).get("city")
@@ -303,6 +353,59 @@ def budget_override_guard_node(state: AgentState) -> dict:
     }
 
 
+def classify_followup_node(state: AgentState) -> dict:
+    """이미 추천을 받은 세션의 후속 메시지가 도시 상세 정보(관광지·맛집) 요청인지,
+    조건을 바꾼 재계획 요청인지 분류한다. 직전 후보 목록을 프롬프트에 넣어줘서
+    "1번"/"첫번째" 같은 순번 표현도 정확한 도시명으로 바로 뽑아내게 한다.
+    """
+    candidates = state["destinations_result"].get("candidates", [])
+    candidate_list = ", ".join(
+        f"{i + 1}. {candidate['city']}" for i, candidate in enumerate(candidates)
+    )
+    intent_agent = create_agent(
+        model=_llm(),
+        tools=None,
+        response_format=FollowupIntent,
+        system_prompt=(
+            "직전 턴에 아래 후보 도시들을 추천했다: "
+            f"{candidate_list}. "
+            "사용자의 새 메시지가 이 중 한 도시를 골라 관광지·꼭 가봐야 할 곳·맛집을 "
+            "묻는 것이면 wants_city_details=true로 하고 selected_city에 정확한 "
+            "도시명을 담아라(이름으로 말했든 '1번'처럼 순번으로 말했든 위 목록과 "
+            "대조해서 골라라). 예산·기간·목적 등 조건을 바꿔 다시 추천·계획을 "
+            "받고 싶어하는 요청이면 wants_city_details=false로 하라."
+        ),
+    )
+    result = intent_agent.invoke({"messages": state["messages"]})
+    extracted: FollowupIntent = result["structured_response"]
+    intent_data = extracted.model_dump()
+    if intent_data.get("selected_city"):
+        intent_data["selected_city"] = (
+            resolve_city_name(intent_data["selected_city"]) or intent_data["selected_city"]
+        )
+    return {"special_intent": intent_data}
+
+
+def route_after_followup_classify(state: AgentState) -> Literal["attractions", "recommend"]:
+    """도시 상세 정보를 원하면 관광지·맛집 조회로, 재계획 요청이면 기존 추천 흐름으로 보낸다."""
+    intent = state.get("special_intent") or {}
+    city = intent.get("selected_city")
+    if intent.get("wants_city_details") and city and city in list_supported_cities():
+        return "attractions"
+    return "recommend"
+
+
+def attractions_node(state: AgentState) -> dict:
+    """사용자가 고른 도시의 관광지·맛집 조회 도구를 호출한다."""
+    city = (state.get("special_intent") or {}).get("selected_city")
+    result = get_attractions(city=city)
+    return {
+        "attractions_result": result,
+        "trace": state.get("trace", []) + ["get_attractions"],
+        "contexts": result["contexts"],
+    }
+
+
 def ask_missing_slot_node(state: AgentState) -> dict:
     """부족한 필수 슬롯을 하나만 되묻는다. 이번 턴엔 도구를 호출하지 않는다."""
     question = _SLOT_QUESTIONS[state["missing_slot"]]
@@ -382,6 +485,9 @@ def generate_answer_node(state: AgentState) -> dict:
             "근거(contexts)에 있는 사실만 사용해서 한국어로 답하라. 근거에 "
             "없는 통계나 수치를 만들어내지 마라. 지원 범위 밖이거나 예산이 "
             "부족하면 그 사실을 있는 그대로 안내하라. "
+            "총예산을 언급할 땐 슬롯의 budget_krw(원 단위 숫자)를 직접 "
+            "만원 단위로 환산하지 말고, 이미 계산된 budget_krw_formatted "
+            "문자열을 그대로 써라(직접 환산하면 자릿수를 틀리기 쉽다). "
             "여행지_추천_결과가 in_scope=True이면 candidates 중 최소 2개(있는 "
             "만큼, 최대 3개)를 후보로 함께 제시하라 — 1곳만 언급하지 마라. "
             "requested_city가 있으면 그 도시가 candidates에 있는지 확인해서 "
@@ -395,17 +501,29 @@ def generate_answer_node(state: AgentState) -> dict:
             "국가면 그 나라 주의사항을 한 번만 정리해 여러 도시에 공통 적용된다고 "
             "밝히고, 국가가 다른 후보가 섞여 있으면 국가별로 나눠 각각 보여줘라. "
             "(가드레일 상황에서만 쓰이는 일정_예산_결과/주의사항_결과 단수 필드가 "
-            "대신 채워져 있으면 그 하나만 사용해서 답하면 된다.)"
+            "대신 채워져 있으면 그 하나만 사용해서 답하면 된다.) "
+            "관광지_맛집_결과가 있으면, 그 도시의 관광지·꼭 가봐야 할 곳·맛집만 "
+            "간결히 답하라. has_evidence가 false면 근거 문서가 없다는 사실을 "
+            "지어내지 말고 그대로 안내하라."
         ),
     )
-    facts = {
-        "슬롯": state.get("slots"),
-        "여행지_추천_결과": state.get("destinations_result"),
-        "일정_예산_결과": state.get("itinerary_result"),
-        "일정_예산_결과_후보별": state.get("itinerary_results"),
-        "주의사항_결과": state.get("precautions_result"),
-        "주의사항_결과_국가별": state.get("precautions_by_country"),
-    }
+    if state.get("attractions_result"):
+        # 관광지·맛집 후속 질문일 때는 이전 턴의 추천·예산·주의사항 정보를 아예
+        # facts에 안 담는다 — 프롬프트 지시만으로는 반복을 못 막아서(다른 지시와
+        # 충돌해 무시되는 걸 확인함), 코드에서 확실히 걸러낸다.
+        facts = {
+            "슬롯": _slots_for_prompt(state.get("slots") or {}),
+            "관광지_맛집_결과": state.get("attractions_result"),
+        }
+    else:
+        facts = {
+            "슬롯": _slots_for_prompt(state.get("slots") or {}),
+            "여행지_추천_결과": state.get("destinations_result"),
+            "일정_예산_결과": state.get("itinerary_result"),
+            "일정_예산_결과_후보별": state.get("itinerary_results"),
+            "주의사항_결과": state.get("precautions_result"),
+            "주의사항_결과_국가별": state.get("precautions_by_country"),
+        }
     result = answer_agent.invoke({"messages": [HumanMessage(content=f"도구 실행 결과: {facts}")]})
     final_message: AIMessage = result["messages"][-1]
     return {"answer": final_message.content, "contexts": state.get("contexts", [])}
@@ -425,6 +543,8 @@ def build_app():
     graph.add_node("scope_check", scope_check_node)
     graph.add_node("precaution_only", precaution_only_node)
     graph.add_node("budget_override_guard", budget_override_guard_node)
+    graph.add_node("classify_followup", classify_followup_node)
+    graph.add_node("attractions", attractions_node)
 
     graph.add_edge(START, "extract_slots")
     graph.add_conditional_edges(
@@ -432,6 +552,7 @@ def build_app():
         route_after_extract_extended,
         {
             "recommend": "recommend",
+            "classify_followup": "classify_followup",
             "scope_check": "scope_check",
             "classify_partial_intent": "classify_partial_intent",
             "ask_missing_slot": "ask_missing_slot",
@@ -447,10 +568,16 @@ def build_app():
             "ask_missing_slot": "ask_missing_slot",
         },
     )
+    graph.add_conditional_edges(
+        "classify_followup",
+        route_after_followup_classify,
+        {"attractions": "attractions", "recommend": "recommend"},
+    )
     graph.add_edge("ask_missing_slot", END)
     graph.add_edge("scope_check", "answer")
     graph.add_edge("precaution_only", "answer")
     graph.add_edge("budget_override_guard", "answer")
+    graph.add_edge("attractions", "answer")
     graph.add_conditional_edges(
         "recommend", route_after_recommend, {"plan": "plan", "answer": "answer"}
     )

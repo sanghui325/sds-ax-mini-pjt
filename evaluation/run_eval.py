@@ -20,7 +20,7 @@ from src.api import app  # noqa: E402
 load_dotenv()
 
 _CSV_PATH = _PROJECT_ROOT / "evaluation" / "test_queries.csv"
-_REPORT_PATH = _PROJECT_ROOT / "evaluation" / "eval_report4.md"
+_REPORT_PATH = _PROJECT_ROOT / "evaluation" / "eval_report6.md"
 _CONTINUATION_MARKERS = ("같은 session_id", "이어지는 후속 턴", "후속 턴")
 
 
